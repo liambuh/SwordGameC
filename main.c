@@ -280,7 +280,7 @@ int process(char input)
 
 PointDir step_toward(int x1, int y1, int x2, int y2)
 {
-    Point p;
+    PointDir p;
 
     int dx = x2 - x1;
     int dy = y2 - y1;
