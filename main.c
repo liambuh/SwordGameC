@@ -265,6 +265,7 @@ int process(char input)
 		SWORD_X = swordpos.x;
 		SWORD_Y = swordpos.y;
 		SWORD_DIR = swordpos.d;
+		updateswordchar(SWORD_DIR);
 	}
 
 	return 0;
