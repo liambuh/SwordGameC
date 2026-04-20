@@ -297,7 +297,7 @@ PointDir getnext(int x1, int y1, int x2, int y2)
 	{
 		// Move in x direction if dx is greater
 		p.x = x1 + sx;
-		p.y = y1 + (dy > 0 ? (dy * sx >= dx * sy ? sy : 0) : 0)
+		p.y = y1 + (dy > 0 ? (dy * sx >= dx * sy ? sy : 0) : 0);
 	}
 	else
 	{
