@@ -134,13 +134,20 @@ int setmessage(char *message)
 	return 0;
 }
 
-int collision(char *grid, int x, int y, int d)
+int collision(char *grid, int x, int y, int d, bool isPlayer)
 {
 	char c = getgridch(grid, x, y);
 	int res = 0;
 
 	res |= (c == '#') ? CF_BLOCK : 0;
-	res |= (isupper(c)) ? (CF_ENEMY | CF_BLOCK) : 0;
+	if(isPlayer)
+	{
+		res |= (isupper(c)) ? (CF_ENEMY | CF_BLOCK) : 0;
+	}
+	else
+	{
+		res |= (isupper(c)) ? (CF_ENEMY) : 0;
+	}
 	
 	return res;
 }
