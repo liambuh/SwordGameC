@@ -111,6 +111,7 @@ int initgrid(char *grid, int W, int H)
 		grid[i]='\n';
 	}
 	setgridch(grid, '#', 2, 2);
+	setgridch(grid, 'G', 4, 4);
 	return 0;
 }
 
@@ -122,7 +123,7 @@ int collision(char *grid, int x, int y)
 	int res = 0;
 
 	res |= (c == '#') ? CF_BLOCK : 0;
-	res |= (isupper(c)) ? CF_ENEMY : 0;
+	res |= (isupper(c)) ? (CF_ENEMY | CF_BLOCK) : 0;
 	
 	return res;
 }
