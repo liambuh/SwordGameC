@@ -278,6 +278,64 @@ int process(char input)
 	return 0;
 }
 
+PointDir getnext(int x1, int y1, int x2, int y2)
+{
+	PointDir p;
+	p.x = x1;
+	p.y = y1;
+	
+	int dx = abs(x2 - x1);
+	int dy = abs(y2 - y1);
+
+	int sx = (x2 > x1) ? 1 : (x2 < x1) ? -1 : 0;
+	int sy = (y2 > y1) ? 1 : (y2 < y1) ? -1 : 0;
+
+	if (dx == 0 && dy == 0)
+		return p;
+
+	if (dx >= dy)
+	{
+		// Move in x direction if dx is greater
+		p.x = x1 + sx;
+		p.y = y1 + (dy > 0 ? (dy * sx >= dx * sy ? sy : 0) : 0)
+	}
+	else
+	{
+		// Move in y direction if dy is greater
+		p.x = x1 + (dx > 0 ? (dx * sy >= dy * sx ? sx : 0) : 0);
+		p.y = y1 + sy;
+	}
+
+	return p;
+}
+
+int gridprocess(void)
+{
+	// plan:
+	// 1. go through the grid array sequentially
+	// 2. decide behaviour based on switch statement
+	for(int y = 0; y < HEIGHT; y++)
+	{
+		for(int x = 0; x < WIDTH; x++)
+		{
+			char c = getgridch(GRID, x, y);
+			switch(c)
+			{
+				case 'G':
+					// use a simple getnearest(int x, int y, int xx, int yy)
+					// function to get the closest tile in range 1 from (x,y) to (xx,yy).
+					// should also work by taking the wrapping coordinate space into account.
+					PointDir pd = getnext(x,y,PLAYER_X,PLAYER_Y);
+					break;
+				default:
+
+					break;
+			}
+		}
+	}
+	return 0;
+}
+
 int main(void)
 {
 	char input;
@@ -292,6 +350,7 @@ int main(void)
 		printf("You pressed: %c \n", input);
 		input = getch();
 		process(input);
+		gridprocess();
 	}
 
 	system("clear");
