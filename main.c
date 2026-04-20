@@ -278,35 +278,22 @@ int process(char input)
 	return 0;
 }
 
-PointDir getnext(int x1, int y1, int x2, int y2)
+PointDir step_toward(int x1, int y1, int x2, int y2)
 {
-	PointDir p;
-	p.x = x1;
-	p.y = y1;
-	
-	int dx = abs(x2 - x1);
-	int dy = abs(y2 - y1);
+    Point p;
 
-	int sx = (x2 > x1) ? 1 : (x2 < x1) ? -1 : 0;
-	int sy = (y2 > y1) ? 1 : (y2 < y1) ? -1 : 0;
+    int dx = x2 - x1;
+    int dy = y2 - y1;
 
-	if (dx == 0 && dy == 0)
-		return p;
+    // normalize to -1, 0, or 1
+    if (dx != 0) dx /= abs(dx);
+    if (dy != 0) dy /= abs(dy);
 
-	if (dx >= dy)
-	{
-		// Move in x direction if dx is greater
-		p.x = x1 + sx;
-		p.y = y1 + (dy > 0 ? (dy * sx >= dx * sy ? sy : 0) : 0);
-	}
-	else
-	{
-		// Move in y direction if dy is greater
-		p.x = x1 + (dx > 0 ? (dx * sy >= dy * sx ? sx : 0) : 0);
-		p.y = y1 + sy;
-	}
+    p.x = x1 + dx;
+    p.y = y1 + dy;
+	p.d=0; //could be very useful for directional-dependant states. just set north for now
 
-	return p;
+    return p;
 }
 
 int movechar(int x, int y, int xx, int yy)
@@ -330,10 +317,7 @@ int gridprocess(void)
 			switch(c)
 			{
 				case 'G':
-					// use a simple getnearest(int x, int y, int xx, int yy)
-					// function to get the closest tile in range 1 from (x,y) to (xx,yy).
-					// should also work by taking the wrapping coordinate space into account.
-					PointDir pd = getnext(x,y,PLAYER_X,PLAYER_Y);
+					PointDir pd = step_toward(x,y,PLAYER_X,PLAYER_Y);
 					movechar(x,y,pd.x,pd.y);
 					break;
 				default:
@@ -357,8 +341,11 @@ int main(void)
 		printgrid(GRID);
 		printf("%s\n", MESSAGE);
 		printf("You pressed: %c \n", input);
+
 		input = getch();
+
 		process(input);
+
 		gridprocess();
 	}
 
