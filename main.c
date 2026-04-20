@@ -118,7 +118,7 @@ int initgrid(char *grid, int W, int H)
 int setmessage(char *message)
 {
 	snprintf(MESSAGE, sizeof(MESSAGE), "%s", message);
-	MESSAGE[49] = '\0';
+	return 0;
 }
 
 int collision(char *grid, int x, int y)
