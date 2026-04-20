@@ -238,7 +238,7 @@ int process(char input)
 	int tpx = modc(PLAYER_X + dx, WIDTH);
 	int tpy = modc(PLAYER_Y + dy, HEIGHT);
 
-	int colres = collision(GRID, tpx,tpy,tpd);
+	int colres = collision(GRID, tpx,tpy,tpd, true);
 
 	setmessage("...");
 	
@@ -258,7 +258,7 @@ int process(char input)
 
 	//sword collision
 	PointDir swordpos = getswordpos(tpx,tpy,tpd);
-	int scolres = collision(GRID, swordpos.x, swordpos.y, swordpos.d);
+	int scolres = collision(GRID, swordpos.x, swordpos.y, swordpos.d, false);
 	if(scolres & CF_BLOCK)
 	{
 		validMove = false;
