@@ -28,6 +28,7 @@ int PLAYER_DIR = 0; //N,E,S,W
 int SWORD_X = 0;
 int SWORD_Y = 0;
 int SWORD_DIR = 0;
+char SWORD_CHAR = '^';
 
 char GRID[ARRAY_GRIDSIZE];
 char MESSAGE[50];
@@ -148,7 +149,7 @@ int getswordpos(int x, int y, int dir)
 {
 	int dx = 0;
 	int dy = 0;
-	Point p;
+	PointDir p;
 	p.x = x;
 	p.y = y;
 
