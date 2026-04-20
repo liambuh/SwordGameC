@@ -149,6 +149,8 @@ int collision(char *grid, int x, int y, int d, bool isPlayer)
 	{
 		res |= (isupper(c)) ? (CF_ENEMY) : 0;
 	}
+
+	res |= (c == '@') ? CF_PLAYER : 0;
 	
 	return res;
 }
