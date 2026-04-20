@@ -34,9 +34,10 @@ char GRID[ARRAY_GRIDSIZE];
 char MESSAGE[50];
 
 enum {
-	CF_BLOCK = 1 << 0,
-	CF_ENEMY = 1 << 1,
-	CF_ITEM  = 1 << 2
+	CF_BLOCK  = 1 << 0,
+	CF_ENEMY  = 1 << 1,
+	CF_ITEM   = 1 << 2,
+	CF_PLAYER = 1 << 3
 };
 
 typedef struct { int x, y, d; } PointDir;
@@ -331,7 +332,13 @@ int gridprocess(void)
 				case 'G':
 				{
 					PointDir pd = step_toward_wrap(x, y, PLAYER_X, PLAYER_Y);
-					movechar(x, y, pd.x, pd.y);
+					bool vmove = true;
+					int colres = collision(GRID, pd.x, pd.y, pd.d, true);
+					if(colres & CF_BLOCK || colres & CF_PLAYER)
+						vmove = false;
+					if(vmove)
+						movechar(x, y, pd.x, pd.y);
+					
 					break;
 				}
 			}
