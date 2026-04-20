@@ -300,7 +300,7 @@ int movechar(int x, int y, int xx, int yy)
 {
 	char c = getgridch(GRID, x, y);
 	setgridch(GRID, '.', x, y);
-	setgridch(GRID, c, x, y);
+	setgridch(GRID, c, xx, yy);
 	return 0;
 }
 
@@ -309,20 +309,23 @@ int gridprocess(void)
 	// plan:
 	// 1. go through the grid array sequentially
 	// 2. decide behaviour based on switch statement
-	for(int y = 0; y < HEIGHT; y++)
+	char oldgrid[ARRAY_GRIDSIZE];
+	memcpy(oldgrid, GRID, ARRAY_GRIDSIZE);
+
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for(int x = 0; x < WIDTH; x++)
+		for (int x = 0; x < WIDTH; x++)
 		{
-			char c = getgridch(GRID, x, y);
-			switch(c)
+			char c = getgridch(oldgrid, x, y);
+
+			switch (c)
 			{
 				case 'G':
-					PointDir pd = step_toward(x,y,PLAYER_X,PLAYER_Y);
-					movechar(x,y,pd.x,pd.y);
+				{
+					PointDir pd = step_toward(x, y, PLAYER_X, PLAYER_Y);
+					movechar(x, y, pd.x, pd.y);
 					break;
-				default:
-
-					break;
+				}
 			}
 		}
 	}
