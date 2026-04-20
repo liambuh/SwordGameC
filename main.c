@@ -278,20 +278,25 @@ int process(char input)
 	return 0;
 }
 
-PointDir step_toward(int x1, int y1, int x2, int y2)
+PointDir step_toward_wrap(int x1, int y1, int x2, int y2)
 {
-    PointDir p;
+    PointDir p = {x1, y1};
 
     int dx = x2 - x1;
     int dy = y2 - y1;
 
-    // normalize to -1, 0, or 1
+    if (dx > WIDTH / 2)  dx -= WIDTH;
+    if (dx < -WIDTH / 2) dx += WIDTH;
+
+    if (dy > HEIGHT / 2)  dy -= HEIGHT;
+    if (dy < -HEIGHT / 2) dy += HEIGHT;
+
     if (dx != 0) dx /= abs(dx);
     if (dy != 0) dy /= abs(dy);
 
-    p.x = x1 + dx;
-    p.y = y1 + dy;
-	p.d=0; //could be very useful for directional-dependant states. just set north for now
+    p.x = modc(x1 + dx, WIDTH);
+    p.y = modc(y1 + dy, HEIGHT);
+	p.d = 0;
 
     return p;
 }
@@ -322,7 +327,7 @@ int gridprocess(void)
 			{
 				case 'G':
 				{
-					PointDir pd = step_toward(x, y, PLAYER_X, PLAYER_Y);
+					PointDir pd = step_toward_wrap(x, y, PLAYER_X, PLAYER_Y);
 					movechar(x, y, pd.x, pd.y);
 					break;
 				}
