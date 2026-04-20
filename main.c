@@ -117,7 +117,7 @@ int initgrid(char *grid, int W, int H)
 
 int setmessage(char *message)
 {
-	memcpy(MESSAGE, sizeof(*message), *message);
+	snprintf(MESSAGE, sizeof(MESSAGE), "%s", message);
 	MESSAGE[49] = '\0';
 }
 
