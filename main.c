@@ -145,7 +145,7 @@ int collision(char *grid, int x, int y, int d)
 	return res;
 }
 
-int getswordpos(int x, int y, int dir)
+PointDir getswordpos(int x, int y, int dir)
 {
 	int dx = 0;
 	int dy = 0;
