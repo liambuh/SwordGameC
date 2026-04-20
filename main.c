@@ -6,13 +6,13 @@
 #include <string.h>
 #include <ctype.h>
 
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#define AC_RED     "\x1b[31m"
+#define AC_GREEN   "\x1b[32m"
+#define AC_YELLOW  "\x1b[33m"
+#define AC_BLUE    "\x1b[34m"
+#define AC_MAGENTA "\x1b[35m"
+#define AC_CYAN    "\x1b[36m"
+#define AC_RESET   "\x1b[0m"
 
 #define WIDTH 20
 #define HEIGHT 20
@@ -309,6 +309,14 @@ PointDir getnext(int x1, int y1, int x2, int y2)
 	return p;
 }
 
+int movechar(int x, int y, int xx, int yy)#
+{
+	char c = getgridch(GRID, x, y);
+	setgridch(GRID, '.', x, y);
+	setgridch(GRID, c, x, y);
+	return 0;
+}
+
 int gridprocess(void)
 {
 	// plan:
@@ -326,6 +334,7 @@ int gridprocess(void)
 					// function to get the closest tile in range 1 from (x,y) to (xx,yy).
 					// should also work by taking the wrapping coordinate space into account.
 					PointDir pd = getnext(x,y,PLAYER_X,PLAYER_Y);
+					movechar(x,y,pd.x,pd.y);
 					break;
 				default:
 
