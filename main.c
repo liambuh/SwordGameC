@@ -20,8 +20,15 @@
 
 //globals:
 bool EXIT_FLAG = 0;
+
 int PLAYER_X = 10;
 int PLAYER_Y = 10;
+int PLAYER_DIR = 0; //N,E,S,W
+
+int SWORD_X = 0;
+int SWORD_Y = 0;
+int SWORD_DIR = 0;
+
 char GRID[ARRAY_GRIDSIZE];
 char MESSAGE[50];
 
@@ -30,6 +37,8 @@ enum {
 	CF_ENEMY = 1 << 1,
 	CF_ITEM  = 1 << 2
 };
+
+typedef struct { int x, y, d; } PointDir;
 
 /// credit: https://stackoverflow.com/questions/421860/capture-characters-from-standard-input-without-waiting-for-enter-to-be-pressed
 char getch() {
@@ -65,6 +74,9 @@ int printgrid(char grid[])
 	//add player to grid:
 	int coord = coordtoindex(PLAYER_X,PLAYER_Y);
 	tg[coord] = '@';
+
+	int scoord = coordtoindex(SWORD_X,SWORD_Y);
+	tg[scoord] = SWORD_CHAR;
 
 	printf(tg);
 
@@ -121,7 +133,7 @@ int setmessage(char *message)
 	return 0;
 }
 
-int collision(char *grid, int x, int y)
+int collision(char *grid, int x, int y, int d)
 {
 	char c = getgridch(grid, x, y);
 	int res = 0;
@@ -132,43 +144,126 @@ int collision(char *grid, int x, int y)
 	return res;
 }
 
+int getswordpos(int x, int y, int dir)
+{
+	int dx = 0;
+	int dy = 0;
+	Point p;
+	p.x = x;
+	p.y = y;
+
+	if(dir == 0)
+	{
+		dy = -1;
+	}
+	else if(dir == 1)
+	{
+		dx = 1;
+	}
+	else if (dir == 2)
+	{
+		dy = 1;
+	}
+	else if(dir == 3)
+	{
+		dx = -1;
+	}
+	p.x += dx;
+	p.y += dy;
+	pd.d = dir;
+
+	return p;
+}
+
+int updateswordchar(int dir)
+{
+	if(dir == 0)
+	{
+		SWORD_CHAR='^';
+	}
+	else if(dir == 1)
+	{
+		SWORD_CHAR='>';
+	}
+	else if (dir == 2)
+	{
+		SWORD_CHAR='v';
+	}
+	else if(dir == 3)
+	{
+		SWORD_CHAR='<';
+	}
+	return 0;
+}
+
 int process(char input)
 {
 	int dx=0;
 	int dy=0;
+	int tpd=PLAYER_DIR;
 	if(input == 'q')
 	{
 		EXIT_FLAG = 1;
 	}
+
 	if(input == 'h')
+	{
 		dx = -1;
+		tpd = 3;
+	}	
 	else if(input == 'j')
+	{
 		dy = -1;
+		tpd = 0;
+	}	
 	else if(input == 'k')
+	{
 		dy = 1;
+		tpd = 1;
+	}	
 	else if(input == 'l')
+	{
 		dx = 1;
-	
+		tpd = 2;
+	}
+		
 	int tpx = modc(PLAYER_X + dx, WIDTH);
 	int tpy = modc(PLAYER_Y + dy, HEIGHT);
-	
-	int colres = collision(GRID, tpx,tpy);
+
+	int colres = collision(GRID, tpx,tpy,tpd);
 
 	setmessage("...");
+	
+	bool validMove = true;
 
 	if (colres & CF_BLOCK)
 	{
 		setmessage("Blocked!");
-	}
-	else
-	{
-		PLAYER_Y = tpy;
-		PLAYER_X = tpx;
+		validMove = false;
 	}
 
 	if (colres & CF_ENEMY)
 	{
 		setmessage("Owch!");
+		validMove = false;
+	}
+
+	//sword collision
+	PointDir swordpos = getswordpos(tpx,tpy,tpd);
+	int scolres = collision(GRID, swordpos.x, swordpos.y, swordpos.d);
+	if(scolres & CF_BLOCK)
+	{
+		validMove = false;
+	}
+
+	if(validMove)
+	{
+		PLAYER_X = tpx;
+		PLAYER_Y = tpy;
+		PLAYER_DIR = tpd;
+		SWORD_X = swordpos.x;
+		SWORD_Y = swordpos.y;
+		SWORD_DIR = swordpos.d;
 	}
 
 	return 0;
