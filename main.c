@@ -115,7 +115,11 @@ int initgrid(char *grid, int W, int H)
 	return 0;
 }
 
-
+int setmessage(char *message)
+{
+	memcpy(MESSAGE, sizeof(message), message);
+	MESSAGE[49] = '\0';
+}
 
 int collision(char *grid, int x, int y)
 {
@@ -149,9 +153,12 @@ int process(char input)
 	int tpy = modc(PLAYER_Y + dy, HEIGHT);
 	
 	int colres = collision(GRID, tpx,tpy);
+
+	setmessage("...");
+
 	if (colres & CF_BLOCK)
 	{
-		
+		setmessage("Blocked!");
 	}
 	else
 	{
@@ -161,7 +168,7 @@ int process(char input)
 
 	if (colres & CF_ENEMY)
 	{
-		
+		setmessage("Owch!");
 	}
 
 	return 0;
@@ -177,6 +184,7 @@ int main(void)
 		system("clear");
 
 		printgrid(GRID);
+		printf("%s\n", MESSAGE);
 		printf("You pressed: %c \n", input);
 		input = getch();
 		process(input);
