@@ -23,6 +23,7 @@ bool EXIT_FLAG = 0;
 int PLAYER_X = 10;
 int PLAYER_Y = 10;
 char GRID[ARRAY_GRIDSIZE];
+char MESSAGE[50];
 
 enum {
 	CF_BLOCK = 1 << 0,
@@ -122,6 +123,8 @@ int collision(char *grid, int x, int y)
 
 	res |= (c == '#') ? CF_BLOCK : 0;
 	res |= (isupper(c)) ? CF_ENEMY : 0;
+	
+	return res;
 }
 
 int process(char input)
@@ -153,6 +156,11 @@ int process(char input)
 	{
 		PLAYER_Y = tpy;
 		PLAYER_X = tpx;
+	}
+
+	if (colres & CF_ENEMY)
+	{
+		
 	}
 
 	return 0;
