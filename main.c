@@ -220,12 +220,12 @@ int process(char input)
 	else if(input == 'k')
 	{
 		dy = 1;
-		tpd = 1;
+		tpd = 2;
 	}	
 	else if(input == 'l')
 	{
 		dx = 1;
-		tpd = 2;
+		tpd = 1;
 	}
 		
 	int tpx = modc(PLAYER_X + dx, WIDTH);
