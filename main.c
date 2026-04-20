@@ -150,7 +150,7 @@ int collision(char *grid, int x, int y, int d, bool isPlayer)
 		res |= (isupper(c)) ? (CF_ENEMY) : 0;
 	}
 
-	res |= (c == '@') ? CF_PLAYER : 0;
+	res |= (c == '@' || (x == PLAYER_X && y == PLAYER_Y)) ? CF_PLAYER : 0;
 	
 	return res;
 }
@@ -340,6 +340,7 @@ int gridprocess(void)
 						vmove = false;
 					else if(colres & CF_PLAYER)
 						vmove = false;
+					
 					if(vmove)
 						movechar(x, y, pd.x, pd.y);
 					
