@@ -171,7 +171,7 @@ PointDir getswordpos(int x, int y, int dir)
 	}
 	p.x += dx;
 	p.y += dy;
-	pd.d = dir;
+	p.d = dir;
 
 	return p;
 }
