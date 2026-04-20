@@ -336,7 +336,9 @@ int gridprocess(void)
 					PointDir pd = step_toward_wrap(x, y, PLAYER_X, PLAYER_Y);
 					bool vmove = true;
 					int colres = collision(GRID, pd.x, pd.y, pd.d, true);
-					if(colres & CF_BLOCK || colres & CF_PLAYER)
+					if(colres & CF_BLOCK)
+						vmove = false;
+					else if(colres & CF_PLAYER)
 						vmove = false;
 					if(vmove)
 						movechar(x, y, pd.x, pd.y);
