@@ -309,7 +309,7 @@ PointDir getnext(int x1, int y1, int x2, int y2)
 	return p;
 }
 
-int movechar(int x, int y, int xx, int yy)#
+int movechar(int x, int y, int xx, int yy)
 {
 	char c = getgridch(GRID, x, y);
 	setgridch(GRID, '.', x, y);
