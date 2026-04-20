@@ -180,6 +180,9 @@ PointDir getswordpos(int x, int y, int dir)
 	p.y += dy;
 	p.d = dir;
 
+	p.x = modc(p.x, WIDTH);
+	p.y = modc(p.y, HEIGHT);
+
 	return p;
 }
 
