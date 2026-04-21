@@ -373,7 +373,7 @@ int main(void)
 
 		printgrid(GRID);
 		printf("%s\n", MESSAGE);
-		printf("HP: %c \n", HP);
+		printf("HP: %d \n", HP);
 
 		input = getch();
 
