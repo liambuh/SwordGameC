@@ -24,6 +24,7 @@ bool EXIT_FLAG = 0;
 int PLAYER_X = 10;
 int PLAYER_Y = 10;
 int PLAYER_DIR = 0; //N,E,S,W
+int HP = 5;
 
 int SWORD_X = 0;
 int SWORD_Y = 0;
@@ -328,7 +329,7 @@ int gridprocess(void)
 		for (int x = 0; x < WIDTH; x++)
 		{
 			char c = getgridch(oldgrid, x, y);
-
+			bool hitplayer = false;
 			switch (c)
 			{
 				case 'G':
@@ -339,13 +340,22 @@ int gridprocess(void)
 					if(colres & CF_BLOCK)
 						vmove = false;
 					else if(colres & CF_PLAYER)
+					{
 						vmove = false;
+						hitplayer = true;
+					}
+						
 					
 					if(vmove)
 						movechar(x, y, pd.x, pd.y);
 					
 					break;
 				}
+			}
+
+			if(hitplayer)
+			{
+				HP--;
 			}
 		}
 	}
@@ -363,13 +373,18 @@ int main(void)
 
 		printgrid(GRID);
 		printf("%s\n", MESSAGE);
-		printf("You pressed: %c \n", input);
+		printf("HP: %c \n", HP);
 
 		input = getch();
 
 		process(input);
 
 		gridprocess();
+
+		if(HP <= 0)
+		{
+			EXIT_FLAG = 1;
+		}
 	}
 
 	system("clear");
