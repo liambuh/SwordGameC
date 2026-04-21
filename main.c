@@ -372,7 +372,7 @@ int main(void)
 		if(HP <= 0)
 		{
 			EXIT_FLAG = 1;
-			MESSAGE = "Game Over!!";
+			setmessage("Game Over!!");
 		}
 
 		system("clear");
