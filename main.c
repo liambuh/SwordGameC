@@ -369,6 +369,12 @@ int main(void)
 
 	while(!EXIT_FLAG)
 	{
+		if(HP <= 0)
+		{
+			EXIT_FLAG = 1;
+			MESSAGE = "Game Over!!";
+		}
+
 		system("clear");
 
 		printgrid(GRID);
@@ -380,11 +386,6 @@ int main(void)
 		process(input);
 
 		gridprocess();
-
-		if(HP <= 0)
-		{
-			EXIT_FLAG = 1;
-		}
 	}
 
 	system("clear");
